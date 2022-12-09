@@ -1,0 +1,42 @@
+{
+  "version": "2.0",
+  "routeKey": "ANY /",
+  "rawPath": "/",
+  "rawQueryString": "",
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br",
+    "cache-control": "no-cache,max-age=0",
+    "content-length": "1013",
+    "content-type": "application/atom+xml",
+    "from": "googlebot(at)googlebot.com",
+    "host": "edwqlac0z2.execute-api.eu-central-1.amazonaws.com",
+    "link": "<https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCdubelOloxR3wzwJG9x8YqQ>; rel=self, <http://pubsubhubbub.appspot.com/>; rel=hub",
+    "pragma": "no-cache",
+    "user-agent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)",
+    "x-amzn-trace-id": "Root=1-63934813-7cd4ec196eb396a55e24dec9",
+    "x-forwarded-for": "74.125.212.22",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "requestContext": {
+    "accountId": "356300931962",
+    "apiId": "edwqlac0z2",
+    "domainName": "edwqlac0z2.execute-api.eu-central-1.amazonaws.com",
+    "domainPrefix": "edwqlac0z2",
+    "http": {
+      "method": "POST",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "74.125.212.22",
+      "userAgent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)"
+    },
+    "requestId": "c4gzIiNgliAEMLw=",
+    "routeKey": "ANY /",
+    "stage": "$default",
+    "time": "09/Dec/2022:14:37:07 +0000",
+    "timeEpoch": 1670596627866
+  },
+  "body": "<?xml version='1.0' encoding='UTF-8'?>\n<feed xmlns:yt=\"http://www.youtube.com/xml/schemas/2015\" xmlns=\"http://www.w3.org/2005/Atom\"><link rel=\"hub\" href=\"https://pubsubhubbub.appspot.com\"/><link rel=\"self\" href=\"https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCdubelOloxR3wzwJG9x8YqQ\"/><title>YouTube video feed</title><updated>2022-12-09T14:37:05.401210202+00:00</updated><entry>\n<id>yt:video:sEJTApJRDD0</id>\n<yt:videoId>sEJTApJRDD0</yt:videoId>\n<yt:channelId>UCdubelOloxR3wzwJG9x8YqQ</yt:channelId>\n<title>«Я не боюсь, и вы не бойтесь!» Яшина приговорили к 8,5 за антивоенную позицию</title>\n<link rel=\"alternate\" href=\"https://www.youtube.com/watch?v=sEJTApJRDD0\"/>\n<author>\n<name>Телеканал Дождь</name>\n<uri>https://www.youtube.com/channel/UCdubelOloxR3wzwJG9x8YqQ</uri>\n</author>\n<published>2022-12-09T14:29:59+00:00</published>\n<updated>2022-12-09T14:37:05.401210202+00:00</updated>\n</entry></feed>\n",
+  "isBase64Encoded": false
+}

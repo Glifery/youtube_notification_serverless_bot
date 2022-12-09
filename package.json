@@ -5,7 +5,9 @@
     "private": true,
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.188.0",
-        "@aws-sdk/lib-dynamodb": "^3.188.0"
+        "@aws-sdk/lib-dynamodb": "^3.188.0",
+        "fast-xml-parser": "^4.0.12",
+        "node-telegram-bot-api": "^0.60.0"
     },
     "devDependencies": {
         "aws-sdk-client-mock": "^2.0.0",
@@ -27,4 +29,3 @@
         ]
     }
 }
-

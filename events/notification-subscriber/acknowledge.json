@@ -1,0 +1,45 @@
+{
+  "version": "2.0",
+  "routeKey": "ANY /",
+  "rawPath": "/",
+  "rawQueryString": "hub.topic=https://www.youtube.com/xml/feeds/videos.xml%3Fchannel_id%3DUCdubelOloxR3wzwJG9x8YqQ&hub.challenge=5900670712711251793&hub.mode=subscribe&hub.lease_seconds=432000",
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br",
+    "cache-control": "no-cache,max-age=0",
+    "content-length": "0",
+    "from": "googlebot(at)googlebot.com",
+    "host": "edwqlac0z2.execute-api.eu-central-1.amazonaws.com",
+    "pragma": "no-cache",
+    "user-agent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)",
+    "x-amzn-trace-id": "Root=1-639090b3-5160960433ff03b8144dcf9c",
+    "x-forwarded-for": "74.125.209.84",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "queryStringParameters": {
+    "hub.challenge": "5900670712711251793",
+    "hub.lease_seconds": "432000",
+    "hub.mode": "subscribe",
+    "hub.topic": "https://www.youtube.com/xml/feeds/videos.xml?channel_id=UCdubelOloxR3wzwJG9x8YqQ"
+  },
+  "requestContext": {
+    "accountId": "356300931962",
+    "apiId": "edwqlac0z2",
+    "domainName": "edwqlac0z2.execute-api.eu-central-1.amazonaws.com",
+    "domainPrefix": "edwqlac0z2",
+    "http": {
+      "method": "GET",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "74.125.209.84",
+      "userAgent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)"
+    },
+    "requestId": "cxuMIgpIFiAEJ6Q=",
+    "routeKey": "ANY /",
+    "stage": "$default",
+    "time": "07/Dec/2022:13:10:11 +0000",
+    "timeEpoch": 1670418611871
+  },
+  "isBase64Encoded": false
+}
