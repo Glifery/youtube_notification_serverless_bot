@@ -15,6 +15,31 @@ Transform:
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
+  notificationSubscriberFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/notification-subscriber.notificationSubscriberHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Catch subscription from YouTube channel
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDbTable
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Ref DynamoDbTable
+          TELEGRAM_BOT_TOKEN: !Ref TelegramBotToken
+          TELEGRAM_CHANNEL_ID: !Ref TelegramChannelId
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /subscriber
+            Method: GET
+
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
@@ -113,6 +138,12 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+
+Parameters:
+  TelegramBotToken:
+    Type: String
+  TelegramChannelId:
+    Type: String
 
 Outputs:
   WebEndpoint:

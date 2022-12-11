@@ -16,6 +16,16 @@ export const notificationSubscriberHandler = async (event) => {
     console.log(event);
 
     if (queryStringParameters != undefined) {
+        const durationDays = queryStringParameters['hub.lease_seconds'] / 60 / 60 / 24;
+        const endsDate = new Date();
+        endsDate.setDate(endsDate.getDate() + durationDays);
+
+        try {
+            await bot.sendMessage(channelId, `Subscribed to channel ${queryStringParameters['hub.topic']} until ${endsDate.toISOString()}: ${queryStringParameters['hub.challenge']}`);
+        } catch (err) {
+            console.log("TG send err:", err.message);
+        }
+
         console.log("Acknowledge with:", queryStringParameters['hub.challenge'])
 
         return {
