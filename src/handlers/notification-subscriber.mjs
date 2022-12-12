@@ -46,12 +46,12 @@ export const notificationSubscriberHandler = async (event) => {
                 id: videoId
             },
         }));
-        // if (data.Item != undefined) {
-        //     return {
-        //         "statusCode": 200,
-        //         "body": `VideoId ${videoId} already registered, skip`
-        //     }
-        // }
+        if (data.Item != undefined) {
+            return {
+                "statusCode": 200,
+                "body": `VideoId ${videoId} already registered, skip`
+            }
+        }
     } catch (err) {
         console.log("DB get err:", err.message);
     }
