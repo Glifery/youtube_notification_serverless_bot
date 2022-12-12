@@ -5,7 +5,7 @@ import TelegramBot from 'node-telegram-bot-api';
 
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
-const tableName = process.env.DYNAMODB_TABLE;
+const tableName = process.env.VIDEOS_DYNAMODB_TABLE;
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const channelId = process.env.TELEGRAM_CHANNEL_ID;

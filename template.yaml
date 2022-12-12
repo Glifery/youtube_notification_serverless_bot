@@ -15,6 +15,81 @@ Transform:
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
+
+  authInitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/auth.authInitHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Init Google API OAuth2 auth
+      Environment:
+        Variables:
+          GOOGLE_CLIENT_ID: !Ref GoogleClientId
+          GOOGLE_CLIENT_SECRET: !Ref GoogleClientSecret
+          GOOGLE_CLIENT_REDIRECT_URL: !Ref GoogleClientRedirectUrl
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /auth
+            Method: GET
+
+  authCallbackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/auth.authCallbackHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Callback for Google API OAuth2 auth
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GoogleTokenDynamoDbTable
+      Environment:
+        Variables:
+          GOOGLE_CLIENT_ID: !Ref GoogleClientId
+          GOOGLE_CLIENT_SECRET: !Ref GoogleClientSecret
+          GOOGLE_CLIENT_REDIRECT_URL: !Ref GoogleClientRedirectUrl
+          GOOLGE_TOKEN_DYNAMODB_TABLE: !Ref GoogleTokenDynamoDbTable
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /auth/callback
+            Method: GET
+
+  notificationRefreshFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/notification-refresh.notificationRefreshHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Refresh subscription to all channels
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GoogleTokenDynamoDbTable
+      Environment:
+        Variables:
+          GOOGLE_CLIENT_ID: !Ref GoogleClientId
+          GOOGLE_CLIENT_SECRET: !Ref GoogleClientSecret
+          GOOGLE_CLIENT_REDIRECT_URL: !Ref GoogleClientRedirectUrl
+          GOOLGE_TOKEN_DYNAMODB_TABLE: !Ref GoogleTokenDynamoDbTable
+#      Events:
+#        Api:
+#          Type: HttpApi
+#          Properties:
+#            Path: /refresh
+#            Method: ANY
+
   notificationSubscriberFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -30,7 +105,7 @@ Resources:
             TableName: !Ref DynamoDbTable
       Environment:
         Variables:
-          DYNAMODB_TABLE: !Ref DynamoDbTable
+          VIDEOS_DYNAMODB_TABLE: !Ref DynamoDbTable
           TELEGRAM_BOT_TOKEN: !Ref TelegramBotToken
           TELEGRAM_CHANNEL_ID: !Ref TelegramChannelId
       Events:
@@ -40,94 +115,17 @@ Resources:
             Path: /subscriber
             Method: ANY
 
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: get-all-items.js
-  getAllItemsFunction:
-    Type: AWS::Serverless::Function
+  GoogleTokenDynamoDbTable:
+    Type: AWS::Serverless::SimpleTable
     Properties:
-      Handler: src/handlers/get-all-items.getAllItemsHandler
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the DynamoDbTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DynamoDbTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref DynamoDbTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: GET
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+      TableName: youtube-notification-serverless-bot-token
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
 
-  # This is a Lambda function config associated with the source code: get-by-id.js
-  getByIdFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/get-by-id.getByIdHandler
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the DynamoDbTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DynamoDbTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref DynamoDbTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /{id}
-            Method: GET
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: put-item.js
-  putItemFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/put-item.putItemHandler
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
-      Policies:
-        # Give Create/Read/Update/Delete Permissions to the DynamoDbTable
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DynamoDbTable
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          SAMPLE_TABLE: !Ref DynamoDbTable
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: POST
-  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
-
-  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
   DynamoDbTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -140,12 +138,27 @@ Resources:
         WriteCapacityUnits: 2
 
 Parameters:
+  GoogleClientId:
+    Type: String
+  GoogleClientSecret:
+    Type: String
+  GoogleClientRedirectUrl:
+    Type: String
   TelegramBotToken:
     Type: String
   TelegramChannelId:
     Type: String
 
 Outputs:
-  WebEndpoint:
-    Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+#  WebEndpoint:
+#    Description: "API Gateway endpoint URL for Prod stage"
+#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  GoogleAuthInit:
+    Description: "Init Google API OAuth2 auth"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/auth"
+  GoogleAuthCallback:
+    Description: "Callback for Google API OAuth2 auth"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/auth/callback"
+  NotificationSubscriber:
+    Description: Catch subscription from YouTube channel
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/subscriber"
