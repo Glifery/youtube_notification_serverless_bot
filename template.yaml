@@ -83,6 +83,7 @@ Resources:
           GOOGLE_CLIENT_SECRET: !Ref GoogleClientSecret
           GOOGLE_CLIENT_REDIRECT_URL: !Ref GoogleClientRedirectUrl
           GOOLGE_TOKEN_DYNAMODB_TABLE: !Ref GoogleTokenDynamoDbTable
+          NOTIFICATION_SUBSCRIPTION_HOST: !Ref NotificationSubscriptionHost
 #      Events:
 #        Api:
 #          Type: HttpApi
@@ -108,6 +109,7 @@ Resources:
           VIDEOS_DYNAMODB_TABLE: !Ref DynamoDbTable
           TELEGRAM_BOT_TOKEN: !Ref TelegramBotToken
           TELEGRAM_CHANNEL_ID: !Ref TelegramChannelId
+          TELEGRAM_ACKNOWLEDGE_SEND: !Ref TelegramAcknowledgeSend
       Events:
         Api:
           Type: HttpApi
@@ -144,15 +146,16 @@ Parameters:
     Type: String
   GoogleClientRedirectUrl:
     Type: String
+  NotificationSubscriptionHost:
+    Type: String
   TelegramBotToken:
     Type: String
   TelegramChannelId:
     Type: String
+  TelegramAcknowledgeSend:
+    Type: String
 
 Outputs:
-#  WebEndpoint:
-#    Description: "API Gateway endpoint URL for Prod stage"
-#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
   GoogleAuthInit:
     Description: "Init Google API OAuth2 auth"
     Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/auth"

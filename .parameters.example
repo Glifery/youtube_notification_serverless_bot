@@ -1,2 +1,10 @@
 TelegramBotToken=<TelegramBotToken>
 TelegramChannelId=<TelegramChannelId>
+TelegramAcknowledgeSend=true
+GoogleClientId=1234567890.apps.googleusercontent.com
+GoogleClientSecret=qwertyuiop
+GoogleClientRedirectUrl="http://localhost:3000/auth/callback"
+NotificationSubscriptionHost="http://localhost:3000"
+
+DynamoDbTable=youtube-notification-serverless-bot
+GoogleTokenDynamoDbTable=youtube-notification-serverless-bot-token

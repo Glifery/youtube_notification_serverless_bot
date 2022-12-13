@@ -20,10 +20,12 @@ export const notificationSubscriberHandler = async (event) => {
         const endsDate = new Date();
         endsDate.setDate(endsDate.getDate() + durationDays);
 
-        try {
-            await bot.sendMessage(channelId, `Subscribed to channel ${queryStringParameters['hub.topic']} until ${endsDate.toISOString()}: ${queryStringParameters['hub.challenge']}`);
-        } catch (err) {
-            console.log("TG send err:", err.message);
+        if (process.env.TELEGRAM_ACKNOWLEDGE_SEND == 'true') {
+            try {
+                await bot.sendMessage(channelId, `Subscribed to channel ${queryStringParameters['hub.topic']} until ${endsDate.toISOString()}: ${queryStringParameters['hub.challenge']}`);
+            } catch (err) {
+                console.log("TG send err:", err.message);
+            }
         }
 
         console.log("Acknowledge with:", queryStringParameters['hub.challenge'])
