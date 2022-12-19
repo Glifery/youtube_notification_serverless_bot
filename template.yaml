@@ -84,12 +84,11 @@ Resources:
           GOOGLE_CLIENT_REDIRECT_URL: !Ref GoogleClientRedirectUrl
           GOOLGE_TOKEN_DYNAMODB_TABLE: !Ref GoogleTokenDynamoDbTable
           NOTIFICATION_SUBSCRIPTION_HOST: !Ref NotificationSubscriptionHost
-#      Events:
-#        Api:
-#          Type: HttpApi
-#          Properties:
-#            Path: /refresh
-#            Method: ANY
+      Events:
+        InvocationLevel:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 0/6 * * ? *)
 
   notificationSubscriberFunction:
     Type: AWS::Serverless::Function

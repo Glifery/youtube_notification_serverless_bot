@@ -1,6 +1,8 @@
 # youtube_notification_serverless_bot
 
 ### Prepare
+* Install AWS CLI
+* Install AWS SAM
 * copy `.parameters.example` into `.parameters` and fill with proper data
 
 
